@@ -171,6 +171,16 @@ class ProcessaLogs extends Command
         while (($registro = \fgetcsv($handle, 4096, "\t")) !== false) {
             $linha++;
 
+            if (\count($registro) !== 6) {
+                logger()->error('[ERRO] Registro inválido', [
+                    'arquivo' => $arquivo,
+                    'linha' => $linha,
+                    'registro' => $registro,
+                ]);
+
+                continue;
+            }
+
             foreach ($registro as $index => $value) {
                 $value = \mb_convert_encoding($value, 'UTF-8', 'ISO-8859-15');
 
